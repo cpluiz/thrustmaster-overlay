@@ -1,0 +1,13 @@
+@import "./base.css";
+
+body{
+  background: transparent !important;
+}
+
+#app{
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background: transparent;
+  overflow: hidden;
+}
