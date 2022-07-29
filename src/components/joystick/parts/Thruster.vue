@@ -117,6 +117,7 @@ import CircleGroup from './subparts/CircleGroup.vue';
         },
     },
     mounted(){
+        this.lastThrust = this.axes.acceleration
     },
     methods:{
         tick(){
