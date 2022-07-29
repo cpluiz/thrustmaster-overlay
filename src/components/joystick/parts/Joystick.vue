@@ -1,5 +1,5 @@
 <template>
-    <div class="joystick-base">
+    <div class="joystick-base" v-if="visible">
         <div class="group1">
             <ButtonGroup v-bind:buttons="classGroup1"></ButtonGroup>
         </div>
@@ -72,18 +72,18 @@ export default{
     props: ["buttons", "axes"],
     data() {
         return {
-            data: null
+            timestamp: 0
         };
     },
     computed: {
         classGroup1() {
             let buttons = {
-                btn0: false,
-                btn1: false,
-                btn2: false,
-                btn3: false,
-                btn4: false,
-                btn5: false,
+                btn0: undefined,
+                btn1: undefined,
+                btn2: undefined,
+                btn3: undefined,
+                btn4: undefined,
+                btn5: undefined,
             };
             if (this.buttons !== undefined) {
                 buttons.btn0 = this.buttons.button5;
@@ -97,12 +97,12 @@ export default{
         },
         classGroup2() {
             let buttons = {
-                btn0: false,
-                btn1: false,
-                btn2: false,
-                btn3: false,
-                btn4: false,
-                btn5: false,
+                btn0: undefined,
+                btn1: undefined,
+                btn2: undefined,
+                btn3: undefined,
+                btn4: undefined,
+                btn5: undefined,
             };
             if (this.buttons !== undefined) {
                 buttons.btn0 = this.buttons.button11;
@@ -120,7 +120,41 @@ export default{
         rotation(){
             if(this.axes.twist === undefined) return '0deg';
             return (this.axes.twist * 35)+"deg";
-        }
+        },
+        show(){
+            return this.axes.x < -0.05 || this.axes.x > 0.05 ||
+                    this.axes.y < -0.05 || this.axes.y > 0.05 ||
+                    this.axes.twist < -0.05 || this.axes.twist > 0.05 ||
+                    (this.axes.pov1 < 1 && this.axes.pov1 > - 1) ||
+                    this.buttons.button1.pressed ||
+                    this.buttons.button2.pressed ||
+                    this.buttons.button3.pressed ||
+                    this.buttons.button4.pressed ||
+                    this.buttons.button5.pressed ||
+                    this.buttons.button6.pressed ||
+                    this.buttons.button7.pressed ||
+                    this.buttons.button8.pressed ||
+                    this.buttons.button9.pressed ||
+                    this.buttons.button10.pressed ||
+                    this.buttons.button11.pressed ||
+                    this.buttons.button12.pressed ||
+                    this.buttons.button13.pressed ||
+                    this.buttons.button14.pressed ||
+                    this.buttons.button15.pressed ||
+                    this.buttons.button16.pressed;
+        },
+        visible(){
+            return this.show || this.timestamp > 0;
+        },
+    },
+    methods:{
+        tick(){
+            if(this.show){
+                this.timestamp = 60 * 3;
+            }
+            if(this.timestamp > -1)
+                this.timestamp --;
+        },
     },
     components: { ButtonGroup, AnalogPad, JoystickHead, JoystickThumb, JoystickSide, ThrusterB2, ThrusterB1, ThrusterButton, CircleGroup, SliderBG, SliderKnob }
 }
@@ -159,7 +193,7 @@ export default{
             .joystick-scroll{
                 position: absolute;
                 top: 1.5rem;
-                left: -16rem;
+                right: -18rem;
                 width: calc(1rem + 4px);
                 height: 100px;
                 .container{

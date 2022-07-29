@@ -1,5 +1,5 @@
 <template>
-    <div id="thruster" :v-if="initialized">
+    <div id="thruster" v-if="initialized && visible">
         <div class="thruster-bg">
             <ThrustBase></ThrustBase>
         </div>
@@ -68,7 +68,8 @@ import CircleGroup from './subparts/CircleGroup.vue';
     props: ["buttons", "axes"],
     data() {
         return {
-            data: null
+            timestamp: 0,
+            lastThrust: 0
         };
     },
     computed:{
@@ -92,11 +93,41 @@ import CircleGroup from './subparts/CircleGroup.vue';
         },
         middlePress(){
             return this.btns.middlePress !== undefined && this.btns.middlePress.pressed;
-        }
+        },
+        show(){
+            return  this.axes.x < -0.05 || this.axes.x > 0.05 ||
+                    this.axes.y < -0.05 || this.axes.y > 0.05 ||
+                    this.axes.butterfly < -0.05 || this.axes.butterfly > 0.05 ||
+                    this.axes.acceleration != this.lastThrust ||
+                    (this.axes.pov1 < 1 && this.axes.pov1 > - 1) ||
+                    this.buttons.pinky.pressed ||
+                    this.buttons.anelar.pressed ||
+                    this.buttons.thumb.pressed ||
+                    this.buttons.centerUp.pressed ||
+                    this.buttons.centerRight.pressed ||
+                    this.buttons.centerDown.pressed ||
+                    this.buttons.centerLeft.pressed ||
+                    this.buttons.bottomUp.pressed ||
+                    this.buttons.bottomRight.pressed ||
+                    this.buttons.bottomDown.pressed ||
+                    this.buttons.bottomLeft.pressed;
+        },
+        visible(){
+            return this.show || this.timestamp > 0;
+        },
     },
     mounted(){
     },
-    methods: {},
+    methods:{
+        tick(){
+            if(this.show){
+                this.timestamp = 60 * 3;
+            }
+            if(this.timestamp > -1)
+                this.timestamp --;
+            this.lastThrust = this.axes.acceleration
+        },
+    },
     components: { ThrustBase, ThrustHead, ThrusterFlip, ThrusterButton, AnalogPad, CircleGroup }
 }
 </script>

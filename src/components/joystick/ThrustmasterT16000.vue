@@ -171,6 +171,10 @@
             this.scangamepads();
             if(this.$refs.pedalRef !== undefined)
                 this.$refs.pedalRef.tick();
+            if(this.$refs.joystickRef !== undefined)
+                this.$refs.joystickRef.tick();
+            if(this.$refs.thrusterRef !== undefined)
+                this.$refs.thrusterRef.tick();
         }
     },
     components: { Pedals, Thruster, Joystick }
@@ -190,18 +194,18 @@
     .thrustContainer{
         position: absolute;
         bottom: 0;
-        left: 0%;
-        padding: 0 0 1rem 1rem;
+        right: 0%;
+        padding: 0 1rem 1rem 0;
     }
     .pedalsContainer{
         position: absolute;
         bottom: 0;
-        right: 0;
+        left: 0;
         padding: 0 0 1rem 1rem;
     }
     .joystickContainer{
         position: absolute;
-        left: 5rem;
+        left: 0;
         top: 0;
         padding: 1rem 0 0 1rem;
     }
