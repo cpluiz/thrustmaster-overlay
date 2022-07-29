@@ -1,13 +1,13 @@
 <template>
     <div class="thrustmaster-t16000">
-        <div class="thrustContainer" :v-if="thruster.visible">
-            <Thruster v-bind:axes="thruster.axes" v-bind:buttons="thruster.buttons"></Thruster>
+        <div class="thrustContainer" v-if="thruster.visible">
+            <Thruster ref="thrusterRef" v-bind:axes="thruster.axes" v-bind:buttons="thruster.buttons"></Thruster>
         </div>
-        <div class="pedalsContainer" :v-if="pedals.visible">
-            <Pedals v-bind:axes="pedals.axes"></Pedals>
+        <div class="pedalsContainer" v-if="pedals.visible">
+            <Pedals ref="pedalRef" v-bind:axes="pedals.axes"></Pedals>
         </div>
-        <div class="joystickContainer" :v-if="joystick.visible">
-            <Joystick v-bind:axes="joystick.axes" v-bind:buttons="joystick.buttons"></Joystick>
+        <div class="joystickContainer" v-if="joystick.visible">
+            <Joystick ref="joystickRef" v-bind:axes="joystick.axes" v-bind:buttons="joystick.buttons"></Joystick>
         </div>
     </div>
 </template>
@@ -169,6 +169,8 @@
         },
         updatestatus() {
             this.scangamepads();
+            if(this.$refs.pedalRef !== undefined)
+                this.$refs.pedalRef.tick();
         }
     },
     components: { Pedals, Thruster, Joystick }
@@ -187,20 +189,20 @@
     }
     .thrustContainer{
         position: absolute;
-        top: 0;
-        left: 0;
-        padding: 1rem 0 0 1rem;
+        bottom: 0;
+        left: 0%;
+        padding: 0 0 1rem 1rem;
     }
     .pedalsContainer{
         position: absolute;
         bottom: 0;
-        left: 0;
+        right: 0;
         padding: 0 0 1rem 1rem;
     }
     .joystickContainer{
         position: absolute;
+        left: 5rem;
         top: 0;
-        right: 0;
-        padding: 1rem 1rem 0 0;
+        padding: 1rem 0 0 1rem;
     }
 </style>

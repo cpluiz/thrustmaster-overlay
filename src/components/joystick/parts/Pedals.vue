@@ -1,5 +1,5 @@
 <template>
-    <div class="pedalArea">
+    <div class="pedalArea" v-if="visible">
         <div class="basePedal">
             <BasePedal></BasePedal>
         </div>
@@ -28,7 +28,7 @@
     props: ['axes'],
     data() {
         return {
-            data: null
+            timestamp: 0
         }
     },
     computed:{
@@ -43,7 +43,25 @@
         },
         angleRightPedal(){
             return (this.axes.rightPedal * 30)+"deg"
-        }
+        },
+        show(){
+            return this.axes.pedalRoll < -0.1 || this.axes.pedalRoll > 0.1  || this.axes.leftPedal < 0.9 || this.axes.rightPedal < 0.9;
+        },
+        visible(){
+            return this.show || this.timestamp > 0;
+        },
+    },
+    beforeMount(){
+        window.test = this;
+    },
+    methods:{
+        tick(){
+            if(this.show){
+                this.timestamp = 60 * 3;
+            }
+            if(this.timestamp > -1)
+                this.timestamp --;
+        },
     },
     components: { BasePedal, PedalPivot, Pedal }
 }

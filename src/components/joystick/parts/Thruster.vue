@@ -95,7 +95,6 @@ import CircleGroup from './subparts/CircleGroup.vue';
         }
     },
     mounted(){
-        window.gambiarra = this;
     },
     methods: {},
     components: { ThrustBase, ThrustHead, ThrusterFlip, ThrusterButton, AnalogPad, CircleGroup }
